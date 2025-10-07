@@ -1,0 +1,170 @@
+# TPC3
+
+## Autor
+
+Beatriz Antunes da Torre, a110500, (![foto](Foto.jpg))
+
+## Resumo
+Criação de uma aplicação de uma aplicação que manipula lista de inteiros.
+
+## Resultados
+
+* Res 1 -
+import random
+
+def menu():
+    print ("MENU")
+    print ("(1) Criar Lista")
+    print ("(2) Ler Lista")
+    print ("(3) Soma")
+    print ("(4) Média")
+    print ("(5) Maior")
+    print ("(6) Menor")
+    print ("(7) estaOrdenada por ordem crescente")
+    print ("(8) estaOrdenada por ordem decrescente")
+    print ("(9) Procura um elemento")
+    print ("(0) Sair")
+
+def criarlista(N):   #criar uma lista de números aleatórios entre 1 e 100 que será guardada na variável interna
+    res = []
+    i = 1
+    while i <= N:
+        res.append(random.randint(1,100))
+        i = i + 1
+    return res
+
+def lerlista():  #Lê uma lista introduzida pelo utilizador 
+    lista=[]
+    valores = input ("Introduza os números da lista separados por um espaço:")
+    partes = valores.split()
+    for n in partes:
+        lista.append(int(n)) 
+    return lista
+
+def somalista(lista): #Calcular a soma dos elementos na lista no momento
+    res = 0
+    for elem in lista:
+        res = res + elem
+    return res 
+
+def medialista(lista): #Calcular a média dos elementos na lista no momento
+    a=len(lista)
+    soma=0
+    for elem in lista:
+        soma = soma+elem
+    media = soma/a
+    return media
+
+def maiorlista(lista):   #calcular o maior elemento da lista 
+    res = lista[0]
+    for num in lista[1:]:
+        if num > res:
+            res = num
+    return res
+
+def menorlista(lista):   #calcular o menor elemento da lista 
+    res = lista [0]
+    for num in lista [1:]:
+        if num < res:
+            res = num
+    return res 
+
+def ordemcrescentelista(lista):   #ver se a lista está ordenada por ordem crescente  
+    cond =True
+    i=0
+    while i <len(lista)-1 and cond:
+        if lista[i]>lista[i+1]:  #se um elemento for maior que o próximo
+            cond = False         #já não está em ordem crescente
+        i=i+1
+    return cond
+
+def ordemdecrescentelista(lista):    #ver se a lista está ordenada por ordem decrescente
+    cond =True
+    i=0
+    while i <len(lista)-1 and cond:
+        if lista[i]<lista[i+1]:  #se um elemento for menor que o próximo
+            cond = False         #já não está em ordem decrescente
+        i=i+1
+    return cond
+
+def procurarumelemento(lista,valor):  #procurar um elemento na lista
+    posiçao = -1               #valor padrão: não encontrado
+    i=0
+    while i < len(lista) and posiçao == -1:
+        if lista[i] == valor:
+            posiçao=i            #guarda a posição
+        i=i+1
+    return posiçao
+
+def main ():   #Programa principal
+    lista = []
+    cond=True
+
+    while cond == True:
+        menu()
+        opçao = input ("Escolha uma opção: ")
+
+        if opçao == "1":  #Crair lista
+            N = int (input("Quantos elementos devem ter a lista:")) 
+            lista = criarlista(N)
+            print ("Lista criada:",lista)
+
+        elif opçao == "2":  #ler lista
+            lista = lerlista()
+            print ("Lista lida:", lista)
+
+        elif opçao == "3":  #calcular a soma dos elementos da lista
+            if lista:
+                print ("Soma =", somalista(lista))
+            else:
+                print ("A lista está vazia.")
+
+        elif opçao == "4":  #calcular a média dos elementos da lista
+            if lista:
+                print ("Média =", medialista(lista))
+            else:
+                print ("A lista está vazia.")
+
+        elif opçao == "5":  #calcular o maior elemento da lista
+            if lista:
+                print ("O maior número é:", maiorlista(lista))
+            else:
+                print ("A lista está vazia.")
+
+        elif opçao == "6":  #calcular o menor elemento da lista
+            if lista:
+                print ("O menor número é:", menorlista(lista))
+            else: 
+                print ("A lista está vazia.")
+
+        elif opçao == "7":  #ver se está ordenada por ordem crescente
+            if lista:
+                print ("A lista está em ordem crescente?", "Sim" if ordemcrescentelista(lista) else "Não")
+            else:
+                print ("A lista está vazia.")
+
+        elif opçao =="8": #ver se está ordenada por ordem decrescente
+            if lista:
+                print ("A lista está em ordem decrescente?", "Sim" if ordemdecrescentelista(lista) else "Não")
+            else:
+                print ("A lista está vazia.") 
+
+        elif opçao == "9":  #procurar um elemento e dar a sua posição
+            if lista:
+                valor = int (input(" Introduza o elemento a procurar:"))
+                posiçao = procurarumelemento (lista,valor)
+                if posiçao !=-1:
+                    print (f"O elemento {valor} está na posição {posiçao}.")
+                else:
+                    print("-1 (Elemento não encontrado)")
+            else:
+                print("A lista está vazia.")
+                
+        elif opçao == "0":  #sair da aplicação e devolver a lista atual
+            print("A aplicação vai terminar...")
+            print("Lista atual:", lista)
+            cond = False
+        else:
+            print ("Operação inválida, tente novamente.")
+
+main ()
