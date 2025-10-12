@@ -1,0 +1,152 @@
+# TPC3
+
+## Autor
+
+Beatriz Antunes da Torre, a110500, (![foto](Foto.jpg))
+
+## Resumo
+Criação de uma aplicacão para gestão de um conjunto de salas de cinema de um centro comercial.
+
+## Resultados
+
+#Modelo:
+#Cinema = [Sala]
+#Sala = [nlugares, vendidos, filme]
+#nlugares = int
+#vendidos = [int]
+#filme = string
+
+def existesala(cinema,filme): #Verificar se já existe uma sala com esse filme
+    cond=False
+    for sala in cinema:
+       if sala[2] == filme:
+           cond=True
+    return cond
+
+def inserirsala(cinema,sala):  #Adiciona sala se não existir
+    if  not existesala(cinema,sala[2]):
+        cinema.append(sala) 
+        print (f"Sala {sala[2]} foi adicionada")
+    else: 
+        print (f"Essa sala já existe.")
+    return cinema
+
+def listar(cinema): #listar todos os filmes em exibição
+    if len(cinema) == 0:
+        print ("Não existem filmes em exibição.")
+    else:
+        print ("Filmes em exibição")
+        i =0
+        while i <len(cinema):
+            sala = cinema[i]
+            print (sala[2])
+            i = i +1
+
+
+def disponivel (cinema,filme,lugar): #ver se o luagr está livre ou não
+    disponivel= False
+    i = 0
+    while i < len(cinema):
+        sala = cinema[i]
+        if sala [2] == filme:
+            if 1 <= lugar <= sala[0] and lugar not in sala[1]: #se estiver nos lugares e não nos ocupados
+                disponivel = True
+        i = i+1
+    return disponivel 
+
+def vendebilhete (cinema,filme,lugar): #vende um bilhete e adiciona um lugar ocupado
+    i = 0
+    salaexiste = False
+    while i < len(cinema):
+        sala = cinema [i]
+        if sala[2] == filme:
+            salaexiste = True 
+            if 1 <= lugar <= sala[0] and lugar not in sala[1]:
+                sala[1].append(lugar) #adiciona o lugar aos ocupados
+                print (f"Bilhete vendido para o lugar {lugar} na sala {filme}.")
+            else:
+                print ("Lugar já ocupado ou não existe.")
+        i=i+1
+    if not salaexiste:
+        print ("Filme não encontrado.")
+    return cinema
+
+def listardisponibilidades (cinema): #lista o número de lugares disponíveis 
+    if len(cinema) == 0:
+        print ("Não existem salas registadas.")
+    else:
+        i = 0
+        while i < len(cinema):
+            sala = cinema[i]
+            disponiveis = sala[0] - len(sala[1])
+            print (f"Sala {sala[2]} tem {disponiveis} lugares disponíveis de {sala[0]}.")
+            i = i + 1
+
+def cancelabilhete(cinema,filme,lugar): #cancela um bilhete e volta a ter o lugar disponível 
+    i = 0
+    salaexiste = False
+    while i < len(cinema):
+        sala = cinema[i]
+        if sala[2] == filme:
+            salaexiste = True
+            if lugar in sala[1]:
+                sala[1].remove(lugar)
+                print(f"O lugar{lugar} está livre no {filme}.")
+            else:
+                print ("Esse lugar não estava ocupado.")
+        i = i + 1
+    if not salaexiste:
+        print ("Filme não encontrado.")
+
+
+def menu():
+    print("Gestão de Salas de Cinema")
+    print("(1) Inserir sala")
+    print("(2) Listar filmes em exibição")
+    print("(3) Vender bilhete")
+    print("(4) Cancelar bilhete")
+    print("(5) Ver disponibilidades")
+    print("(6) Sair")
+
+
+def main():
+    cinema = []
+    cond = True 
+
+    while cond == True:
+        menu()
+        opçao = input("Escolha uma opção:")
+        
+        if opçao == "1": #Inserir sala
+            filme = input ("Nome do filme:")
+            numerolugares = int (input("Número total de lugares:"))
+            sala = [numerolugares,[],filme]
+            inserirsala(cinema,sala)
+
+        elif opçao == "2": #Listar filmes em exibição
+            listar(cinema)
+
+        elif opçao == "3": #vender bilhetes
+            filme = input ("Filme:")
+            lugar = int(input("Lugar:"))
+            if disponivel(cinema,filme,lugar):  #verificar se o lugar dado está disponível
+                vendebilhete(cinema,filme,lugar)
+            else:
+                print ("Lugar não disponível.")
+
+        elif opçao == "4": #cancelar bilhete
+            filme = input ("Filme:")
+            lugar = int(input("Lugar:"))
+            cancelabilhete(cinema,filme,lugar)
+
+        elif opçao == "5": #ver disponibilidades
+            listardisponibilidades(cinema)
+
+        elif opçao == "6": #sair do sistema
+            print ("A sair do sistema.")
+            cond = False
+
+        else:
+            print ("Operação inválida.")
+
+main()
